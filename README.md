@@ -1,7 +1,12 @@
 # Introduction 
-This repository contains the demo code for the .NET Skåne meetup presentation on .NET Aspire.
+This repository contains the demo code for the presentation "What is .NET Aspire and why should you use it?"
 
-It's based on the Aspire-starter template. To create your own version just run the following command:
+## Abstract
+.NET Aspire is a comprehensive set of tools, templates, and packages to help you build observable, production-ready, distributed applications. It simplifies common challenges in modern app development by focusing on enhancing the local development experience. It provides abstractions that streamline the setup of your app's configuration, service discovery, environment variables, and container configurations. Aspire makes it easy to define everything your app needs using integrations designed to simplify connections to popular services and platforms.
+This presentation goes through the basic of why and how of .NET Aspire. And hopefully you will leave with new ideas and inspiration of how you can use .NET Aspire in your projects.
+
+# The Demo
+Is based on the Aspire-starter template. To create your own version just run the following command:
 
 ```bash
 dotnet new aspire-starter -n MyAspireApp
