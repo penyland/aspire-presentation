@@ -1,0 +1,120 @@
+@page "/todo"
+@inject TodoApiClient TodoApiClient
+
+<PageTitle>Todo List</PageTitle>
+
+<h1>Todo List</h1>
+
+<p>Manage your todo items using Azure Table Storage.</p>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Add New Todo
+            </div>
+            <div class="card-body">
+                <EditForm Model="Model" OnSubmit="Submit" FormName="Todo">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <InputText id="title" @bind-Value="Model.Title" class="form-control" />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <InputTextArea id="description" @bind-Value="Model.Description" class="form-control" />
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Add Todo</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (todos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!todos.Any())
+{
+    <p>No todo items found. Add your first one above!</p>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var todo in todos)
+                    {
+                        <tr>
+                            <td>@todo.Title</td>
+                            <td>@todo.Description</td>
+                            <td>
+                                <div class="form-check">
+                                    <InputCheckbox @bind-Value="todo.IsComplete" class="form-check-input" 
+                                                  @onchange="() => UpdateTodoStatus(todo)" />
+                                    <label class="form-check-label">
+                                        @(todo.IsComplete ? "Completed" : "Pending")
+                                    </label>
+                                </div>
+                            </td>
+                            <td>@todo.CreatedAt.LocalDateTime.ToString("g")</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" @onclick="async () => await DeleteTodo(todo.Id)">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    private List<TodoItem>? todos;
+
+    [SupplyParameterFromForm]
+    private TodoItem Model { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTodos();
+    }
+
+    private async Task LoadTodos()
+    {
+        todos = await TodoApiClient.GetTodosAsync();
+        StateHasChanged();
+    }
+
+    private async Task Submit()
+    {
+        await TodoApiClient.CreateTodoAsync(Model);
+        await LoadTodos();
+    }
+
+    private async Task UpdateTodoStatus(TodoItem todo)
+    {
+        await TodoApiClient.UpdateTodoAsync(todo);
+        await LoadTodos();
+    }
+
+    private async Task DeleteTodo(string id)
+    {
+        await TodoApiClient.DeleteTodoAsync(id);
+        await LoadTodos();
+    }
+}

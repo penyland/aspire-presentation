@@ -1,0 +1,1 @@
+export const API_BASE_URL = process.env.services__apiservice__http__0 || process.env.services__apiservice__https__0 || 'http://localhost:5325';
