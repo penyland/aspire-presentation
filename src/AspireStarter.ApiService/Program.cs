@@ -13,6 +13,8 @@ builder.AddAzureTableServiceClient("AzureTableStorage", settings =>
     settings.ConnectionString = builder.Configuration.GetConnectionString("tables");
 });
 
+builder.AddRedisOutputCache(connectionName: "cache");
+
 // Add services to the container.
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
@@ -42,6 +44,8 @@ var summaries = new[]
 app.MapOpenApi();
 app.MapScalarApiReference("/");
 
+app.UseOutputCache();
+
 app.MapGet("/weatherforecast", () =>
 {
     var forecast = Enumerable.Range(1, 5).Select(index =>
@@ -53,6 +57,9 @@ app.MapGet("/weatherforecast", () =>
         ))
         .ToArray();
     return forecast;
+}).CacheOutput(c =>
+{
+    c.Expire(TimeSpan.FromSeconds(30));
 });
 
 // Todo API Endpoints
