@@ -15,7 +15,11 @@ var apiService = builder.AddProject<Projects.AspireStarter_ApiService>("apiServi
     .WithEnvironment("MY_ENVIRONMENT_VARIABLE", "HELLO_WORLD")
     .WithEnvironment("AZURE_TABLE_STORAGE_CONNECTION_STRING", () => storage.GetEndpoint("table").Url);
 
-builder.AddProject<Projects.AspireStarter_Web>("blazorWebFrontend")
+builder.AddProject<Projects.AspireStarter_Web>("webFrontend-blazor")
+    .WithReference(apiService)
+    .WithEnvironment("API_BASE_URL", apiService.GetEndpoint("http"));
+
+builder.AddViteApp("webfrontend-svelte", "../aspire-svelte")
     .WithReference(apiService)
     .WithEnvironment("API_BASE_URL", apiService.GetEndpoint("http"));
 
