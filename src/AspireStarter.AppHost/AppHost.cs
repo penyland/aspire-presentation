@@ -9,9 +9,14 @@ var storage = builder.AddAzureStorage("storage")
 
 var tableStorage = storage.AddTables("tables");
 
+var cache = builder.AddRedis("cache")
+                   .WithRedisInsight()
+                   .WithLifetime(ContainerLifetime.Persistent);
+
 var apiService = builder.AddProject<Projects.AspireStarter_ApiService>("apiService")
     .WaitFor(tableStorage)
     .WithReference(tableStorage)
+    .WithReference(cache)
     .WithEnvironment("MY_ENVIRONMENT_VARIABLE", "HELLO_WORLD")
     .WithEnvironment("AZURE_TABLE_STORAGE_CONNECTION_STRING", () => storage.GetEndpoint("table").Url);
 
