@@ -23,9 +23,11 @@ builder.Services.AddSingleton<TodoService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? ["https://yourdomain.com"];
+
+    options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -148,7 +150,7 @@ app.MapGet("/config", ([FromServices] IConfiguration configuration) =>
 
 app.MapDefaultEndpoints();
 
-app.UseCors();
+app.UseCors("AllowSpecificOrigins");
 
 app.Run();
 

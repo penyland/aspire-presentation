@@ -24,8 +24,12 @@ builder.AddProject<Projects.AspireStarter_Web>("blazorWebFrontend")
     .WithReference(apiService)
     .WithEnvironment("API_BASE_URL", apiService.GetEndpoint("http"));
 
-builder.AddViteApp("webfrontend-svelte", "../aspire-svelte")
+var svelteApp = builder.AddViteApp("webfrontend-svelte", "../aspire-svelte")
     .WithReference(apiService)
     .WithEnvironment("API_BASE_URL", apiService.GetEndpoint("http"));
+
+// Configure CORS for the API service to allow requests from the Svelte frontend
+apiService.WithEnvironment("Cors__AllowedOrigins__0", svelteApp.GetEndpoint("http"));
+
 
 builder.Build().Run();
