@@ -7,15 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Azure.Data.Tables" Version="9.5.1" />
+    <PackageReference Include="Aspire.Azure.Data.Tables" Version="9.5.2" />
     <PackageReference Include="Azure.Core" Version="1.49.0" />
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.8.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AspireStarter.ServiceDefaults\AspireStarter.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
