@@ -18,4 +18,8 @@
     <ProjectReference Include="..\AspireStarter.ServiceDefaults\AspireStarter.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AspireStarter.ServiceDefaults\AspireStarter.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>
