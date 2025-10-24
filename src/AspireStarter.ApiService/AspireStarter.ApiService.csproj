@@ -14,4 +14,8 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.8.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AspireStarter.ServiceDefaults\AspireStarter.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>
