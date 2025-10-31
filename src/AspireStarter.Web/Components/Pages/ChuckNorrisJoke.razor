@@ -1,0 +1,62 @@
+﻿@page "/chuck-norris-joke"
+@using AspireStarter.ApiService
+@inject ChuckApiClient ChuckApiClient
+
+<h1>Chuck Norris Jokes</h1>
+
+<button class="btn btn-primary" @onclick="FetchNewJoke" disabled="@isLoading">
+	@if (isLoading)
+	{
+		<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+		<text>Loading...</text>
+	}
+	else
+	{
+		<text>Get New Joke</text>
+	}
+</button>
+
+@if (jokes.Count > 0)
+{
+	<div class="mt-4">
+		<h3>Jokes:</h3>
+		<ol>
+			@foreach (var jokeItem in jokes)
+			{
+				<li class="mb-2">@jokeItem</li>
+			}
+		</ol>
+	</div>
+}
+
+@code {
+	private List<string> jokes = new List<string>();
+	private bool isLoading = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await FetchNewJoke();
+	}
+
+	private async Task FetchNewJoke()
+	{
+		isLoading = true;
+		StateHasChanged();
+
+		try
+		{
+			var newJoke = await ChuckApiClient.GetRandomJokeAsync();
+			jokes.Add(newJoke);
+		}
+		catch (Exception ex)
+		{
+			// Handle error gracefully - you might want to add error display
+			Console.WriteLine($"Error fetching joke: {ex.Message}");
+		}
+		finally
+		{
+			isLoading = false;
+			StateHasChanged();
+		}
+	}
+}

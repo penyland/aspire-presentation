@@ -33,6 +33,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddChuckApiHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -62,6 +64,12 @@ app.MapGet("/weatherforecast", () =>
 }).CacheOutput(c =>
 {
     c.Expire(TimeSpan.FromSeconds(30));
+});
+
+app.MapGet("/chuckjoke", async ([FromServices] ChuckApiHttpClient chuckApiHttpClient) =>
+{
+    var joke = await chuckApiHttpClient.GetRandomJokeAsync();
+    return TypedResults.Ok(new { Joke = joke });
 });
 
 // Todo API Endpoints
