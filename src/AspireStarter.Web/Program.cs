@@ -1,3 +1,4 @@
+using AspireStarter.ApiService;
 using AspireStarter.Web;
 using AspireStarter.Web.Components;
 
@@ -10,6 +11,7 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddChuckApiClient();
 builder.Services.AddWeatherApiClient();
 builder.Services.AddTodoApiClient();
 

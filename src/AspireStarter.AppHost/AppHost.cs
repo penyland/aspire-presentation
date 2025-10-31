@@ -13,10 +13,14 @@ var cache = builder.AddRedis("cache")
                    .WithRedisInsight()
                    .WithLifetime(ContainerLifetime.Persistent);
 
+var chuckApi = builder.AddExternalService("chuckapi", "https://api.chucknorris.io")
+    .WithHttpHealthCheck("/");
+
 var apiService = builder.AddProject<Projects.AspireStarter_ApiService>("apiService")
     .WaitFor(tableStorage)
     .WithReference(tableStorage)
     .WithReference(cache)
+    .WithReference(chuckApi)
     .WithEnvironment("MY_ENVIRONMENT_VARIABLE", "HELLO_WORLD")
     .WithEnvironment("AZURE_TABLE_STORAGE_CONNECTION_STRING", () => storage.GetEndpoint("table").Url);
 
@@ -28,9 +32,5 @@ var svelteApp = builder.AddViteApp("webfrontend-svelte", "../aspire-svelte")
     .WithReference(apiService)
     .WithNpmPackageInstallation()
     .WithEnvironment("API_BASE_URL", apiService.GetEndpoint("http"));
-
-// Configure CORS for the API service to allow requests from the Svelte frontend
-apiService.WithEnvironment("Cors__AllowedOrigins__0", svelteApp.GetEndpoint("http"));
-
 
 builder.Build().Run();
