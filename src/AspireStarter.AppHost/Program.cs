@@ -20,10 +20,9 @@ var apiService = builder.AddProject<Projects.AspireStarter_ApiService>("apiservi
 builder.AddProject<Projects.AspireStarter_Web>("webfrontend-blazor")
     .WithExternalHttpEndpoints()
     .WithReference(apiService)
-    .WithEnvironment("MY_ENVIRONMENT_VARIABLE", apiService.GetEndpoint("http"));
+    .WithEnvironment("MY_ENVIRONMENT_VARIABLE", apiService.GetEndpoint("https"));
 
 builder.AddViteApp("webfrontend-svelte", "../aspire-svelte")
-    .WithReference(apiService)
-    .WithNpmPackageInstallation();
+    .WithReference(apiService);
 
 builder.Build().Run();
