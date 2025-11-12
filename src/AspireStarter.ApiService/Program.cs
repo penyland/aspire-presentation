@@ -4,9 +4,6 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add service defaults & Aspire components.
-builder.AddServiceDefaults();
-
 // Configure Azure Table Storage for Todo items
 builder.AddAzureTableServiceClient("AzureTableStorage", settings =>
 {
@@ -138,8 +135,6 @@ app.MapGet("/config", ([FromServices] IConfiguration configuration) =>
 {
     return (configuration as IConfigurationRoot)?.GetDebugView();
 });
-
-app.MapDefaultEndpoints();
 
 app.UseCors();
 
