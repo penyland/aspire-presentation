@@ -1,4 +1,4 @@
-﻿<Project Sdk="Aspire.AppHost.Sdk/13.0.0">
+﻿<Project Sdk="Aspire.AppHost.Sdk/13.0.2">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,8 +10,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.Azure.Storage" Version="13.0.0" />
-    <PackageReference Include="Aspire.Hosting.Javascript" Version="13.0.0" />
+    <PackageReference Include="Aspire.Hosting.Azure.Storage" Version="13.0.2" />
+    <PackageReference Include="Aspire.Hosting.Javascript" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
